@@ -48,6 +48,12 @@ TEST(Problem6, Bananas) {
 
     expected = {"-banana", "b-anana"};
     EXPECT_EQ(bananas("bbanana"), expected);
+
+    expected = {"banana"};
+    EXPECT_EQ(bananas("banana"), expected);
+
+    expected = {"ban-an-a", "ban-a-na", "ba-nan-a", "ba-na-na"};
+    EXPECT_EQ(bananas("bannanna"), expected);
 }
 
 int main(int argc, char **argv) {
