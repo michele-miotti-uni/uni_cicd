@@ -2,6 +2,9 @@
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
+#include <array>
+#include <algorithm>
+#include <tgmath.h>
 
 // ############################### PROBLEM 1: Balanced Number [lvl 1] #############################################
 //  A balanced number is a number where the sum of digits to the left of the middle digit(s)
@@ -40,10 +43,26 @@
 //  sum of all digits to the right of the middle digit(s) -> 20
 //  10 and 20 are not equal, so it's not balanced.
 
+bool balancedNumHelper(unsigned long long int number, unsigned long long int left_sum, unsigned long long int right_sum) {
+	if (number < 100) {
+		return left_sum == right_sum;
+	}
+	
+	right_sum += number % 10;
+	const std::string number_string = std::to_string(number);
+	const std::string first_digit_string = number_string.substr(0, 1);
+	const unsigned long long first_digit = std::stoull(first_digit_string);
+	left_sum += first_digit;
+	const unsigned long long reduced_number = (number - first_digit * std::pow(10, number_string.size()-1U)) / 10;
+	return balancedNumHelper(reduced_number, left_sum, right_sum);
+}
+
 std::string balancedNum(unsigned long long int number)
 {
-  // your code here
-  return "";
+  if (balancedNumHelper(number, 0, 0)) {
+  	return "Balanced";
+  }
+  return "Not Balanced";
 }
 
 // ********************************************************************************************************
@@ -57,9 +76,32 @@ std::string balancedNum(unsigned long long int number)
 // "aba" --> false
 // "moOse" --> false (ignore letter case)
 
+std::string str_tolower(std::string s)
+{
+    std::transform(s.begin(), s.end(), s.begin(), 
+                // static_cast<int(*)(int)>(std::tolower)         // wrong
+                // [](int c){ return std::tolower(c); }           // wrong
+                // [](char c){ return std::tolower(c); }          // wrong
+                   [](unsigned char c){ return std::tolower(c); } // correct
+                  );
+    return s;
+}
+
 bool is_isogram(std::string str) {
-  // your code here
-  return false;
+  const std::string lower_str = str_tolower(str);
+  std::array<unsigned int, 26> occurrences = {};
+  for (unsigned int i = 0; i < lower_str.size(); i++) {
+  	const char character = lower_str[i];
+  	if (character >= 'a' && character <= 'z') {
+  		occurrences[character-'a']++;
+  	}
+  }
+  for (unsigned int i = 0; i < 26; i++) {
+  	if (occurrences[i] > 1) {
+  		return false;
+  	}
+  }
+  return true;
 }
 
 // ********************************************************************************************************

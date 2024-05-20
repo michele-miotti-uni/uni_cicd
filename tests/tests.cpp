@@ -4,11 +4,17 @@
 TEST(Problem1, BalancedNum) {
     EXPECT_EQ(balancedNum(7), "Balanced");
     EXPECT_EQ(balancedNum(959), "Balanced");
+    EXPECT_EQ(balancedNum(84593), "Balanced");
+    EXPECT_EQ(balancedNum(845693), "Balanced");
+    EXPECT_EQ(balancedNum(84592), "Not Balanced");
+    EXPECT_EQ(balancedNum(132), "Not Balanced");
 }
 
 TEST(Problem2, IsIsogram) {
     EXPECT_TRUE(is_isogram("Dermatoglyphics"));
     EXPECT_FALSE(is_isogram("aba"));
+    EXPECT_FALSE(is_isogram("abcdeA"));
+    EXPECT_TRUE(is_isogram("_____________abc"));
 }
 
 TEST(Problem3, PossiblyPerfect) {
