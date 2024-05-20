@@ -9,6 +9,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Install clang-format
+      uses: sudo apt-get install clang-format
+     
+    - name: Run clang-format
+      run: clang-format -i src/*.cpp src/*.h tests/*.cpp
+      
+    - name: Install cppcheck
+      run: sudo apt-get install cppcheck
+    
+    - name: Run cppcheck
+      run: cppcheck --enable=all --inconclusive --std=c++17 src
 
     - name: Setup CMake
       uses: jwlawson/actions-setup-cmake@v1
