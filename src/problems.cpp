@@ -1,6 +1,8 @@
 #include <vector>
 #include <string>
 #include <unordered_set>
+#include <array>
+#include <algorithm>
 
 // ############################### PROBLEM 1: Balanced Number [lvl 1] #############################################
 //  A balanced number is a number where the sum of digits to the left of the middle digit(s)
@@ -56,9 +58,32 @@ std::string balancedNum(unsigned long long int number)
 // "aba" --> false
 // "moOse" --> false (ignore letter case)
 
+std::string str_tolower(std::string s)
+{
+    std::transform(s.begin(), s.end(), s.begin(), 
+                // static_cast<int(*)(int)>(std::tolower)         // wrong
+                // [](int c){ return std::tolower(c); }           // wrong
+                // [](char c){ return std::tolower(c); }          // wrong
+                   [](unsigned char c){ return std::tolower(c); } // correct
+                  );
+    return s;
+}
+
 bool is_isogram(std::string str) {
-  // your code here
-  return false;
+  const std::string lower_str = str_tolower(str);
+  std::array<unsigned int, 26> occurrences = {};
+  for (unsigned int i = 0; i < lower_str.size(); i++) {
+  	const char character = lower_str[i];
+  	if (character >= 'a' && character <= 'z') {
+  		occurrences[character-'a']++;
+  	}
+  }
+  for (unsigned int i = 0; i < 26; i++) {
+  	if (occurrences[i] > 1) {
+  		return false;
+  	}
+  }
+  return true;
 }
 
 // ********************************************************************************************************
