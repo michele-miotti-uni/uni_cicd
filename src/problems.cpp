@@ -150,10 +150,11 @@ bool is_isogram(std::string str) {
 bool possibly_perfect(const std::vector<char>& key, const std::vector<char>& answers)
 {
   // We iterate through both vectors, skipping the "_" characters.
-  int correct = 0;
+  unsigned int correct = 0;
+  unsigned int skipped = 0;
   for (int i = 0; i < key.size(); i++) {
     if (key[i] == '_') {
-      correct++;
+      skipped++;
       continue;
     }
 
@@ -163,7 +164,7 @@ bool possibly_perfect(const std::vector<char>& key, const std::vector<char>& ans
   }
 
   // If the number of correct answers is equal to the size of the key, then the student can score 100%.
-  if (correct == key.size()) {
+  if (correct+skipped == key.size()) {
     return true;
   }
 
