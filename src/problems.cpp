@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <unordered_set>
+#include <unordered_map>
 #include <array>
 #include <algorithm>
 #include <tgmath.h>
@@ -148,8 +149,30 @@ bool is_isogram(std::string str) {
 
 bool possibly_perfect(const std::vector<char>& key, const std::vector<char>& answers)
 {
-    // your code here
+  // We iterate through both vectors, skipping the "_" characters.
+  int correct = 0;
+  for (int i = 0; i < key.size(); i++) {
+    if (key[i] == '_') {
+      correct++;
+      continue;
+    }
+
+    if (key[i] == answers[i]) {
+      correct++;
+    }
+  }
+
+  // If the number of correct answers is equal to the size of the key, then the student can score 100%.
+  if (correct == key.size()) {
     return true;
+  }
+
+  // If the number of correct answers is equal to 0, then the student can score 100%.
+  if (correct == 0) {
+    return true;
+  }
+
+  return false;
 }
 
 // ********************************************************************************************************
@@ -167,8 +190,22 @@ bool possibly_perfect(const std::vector<char>& key, const std::vector<char>& ans
 
 int findOdd(const std::vector<int> &numbers)
 {
-  // your code here
-  return 1;
+  // We begin by creating a hash table to store the frequency of each number.
+  std::unordered_map<int, int> freq;
+
+  // Loop through the numbers and increment the frequency of each number.
+  for (int i = 0; i < numbers.size(); i++) {
+    freq[numbers[i]]++;
+  }
+
+  // Loop through the hash table and return the number that has an odd frequency.
+  for (auto it = freq.begin(); it != freq.end(); it++) {
+    if (it->second % 2 != 0) {
+      return it->first;
+    }
+  }
+
+  return -1;
 }
 
 // ********************************************************************************************************
@@ -189,13 +226,53 @@ int findOdd(const std::vector<int> &numbers)
 // For the sake of simplicity, you can assume that any numbers passed into the function will correspond to vowels.
 
 std::string encode(const std::string &str) {
-  // your code here
-  return "";
+  // Create a new string.
+  std::string newStr = "";
+
+  // Loop through the string.
+  for (int i = 0; i < str.length(); i++) {
+    // Check if the character is a vowel.
+    if (str[i] == 'a') {
+      newStr += "1";
+    } else if (str[i] == 'e') {
+      newStr += "2";
+    } else if (str[i] == 'i') {
+      newStr += "3";
+    } else if (str[i] == 'o') {
+      newStr += "4";
+    } else if (str[i] == 'u') {
+      newStr += "5";
+    } else {
+      newStr += str[i];
+    }
+  }
+
+  return newStr;
 }
 
 std::string decode(const std::string &str) {
-  // your code here
-  return "";
+  // Create a new string.
+  std::string newStr = "";
+
+  // Loop through the string.
+  for (int i = 0; i < str.length(); i++) {
+    // Check if the character is a number.
+    if (str[i] == '1') {
+      newStr += "a";
+    } else if (str[i] == '2') {
+      newStr += "e";
+    } else if (str[i] == '3') {
+      newStr += "i";
+    } else if (str[i] == '4') {
+      newStr += "o";
+    } else if (str[i] == '5') {
+      newStr += "u";
+    } else {
+      newStr += str[i];
+    }
+  }
+
+  return newStr;
 }
 
 // ********************************************************************************************************
@@ -237,8 +314,33 @@ std::string decode(const std::string &str) {
 // The example output above is formatted for readability. Please refer to the example tests for expected format of your result.
 
 std::unordered_set<std::string> bananas(const std::string& s) {
-    // your code here
-    return {};
+  // Create a set to store all possible bananas.
+  std::unordered_set<std::string> bananas;
+
+  // Create all possible bit masks.
+  for (int i = 0; i < (1 << s.length()); i++) {
+    // Create a new string.
+    std::string newStr = "";
+    std::string strippedStr = "";
+
+    // Loop through the string.
+    for (int j = 0; j < s.length(); j++) {
+      // Check if the bit is set.
+      if (i & (1 << j)) {
+        newStr += "-";
+      } else {
+        newStr += s[j];
+        strippedStr += s[j];
+      }
+    }
+
+    // Check if the stripped string is equal to "banana".
+    if (strippedStr == "banana") {
+      bananas.insert(newStr);
+    }
+  }
+
+  return bananas;
 }
 
 // ********************************************************************************************************
