@@ -3,6 +3,7 @@
 #include <unordered_set>
 #include <array>
 #include <algorithm>
+#include <tgmath.h>
 
 // ############################### PROBLEM 1: Balanced Number [lvl 1] #############################################
 //  A balanced number is a number where the sum of digits to the left of the middle digit(s)
@@ -41,10 +42,26 @@
 //  sum of all digits to the right of the middle digit(s) -> 20
 //  10 and 20 are not equal, so it's not balanced.
 
+bool balancedNumHelper(unsigned long long int number, unsigned long long int left_sum, unsigned long long int right_sum) {
+	if (number < 100) {
+		return left_sum == right_sum;
+	}
+	
+	right_sum += number % 10;
+	const std::string number_string = std::to_string(number);
+	const std::string first_digit_string = number_string.substr(0, 1);
+	const unsigned long long first_digit = std::stoull(first_digit_string);
+	left_sum += first_digit;
+	const unsigned long long reduced_number = (number - first_digit * std::pow(10, number_string.size()-1U)) / 10;
+	return balancedNumHelper(reduced_number, left_sum, right_sum);
+}
+
 std::string balancedNum(unsigned long long int number)
 {
-  // your code here
-  return "";
+  if (balancedNumHelper(number, 0, 0)) {
+  	return "Balanced";
+  }
+  return "Not Balanced";
 }
 
 // ********************************************************************************************************

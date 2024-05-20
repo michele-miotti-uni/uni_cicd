@@ -4,6 +4,10 @@
 TEST(Problem1, BalancedNum) {
     EXPECT_EQ(balancedNum(7), "Balanced");
     EXPECT_EQ(balancedNum(959), "Balanced");
+    EXPECT_EQ(balancedNum(84593), "Balanced");
+    EXPECT_EQ(balancedNum(845693), "Balanced");
+    EXPECT_EQ(balancedNum(84592), "Not Balanced");
+    EXPECT_EQ(balancedNum(132), "Not Balanced");
 }
 
 TEST(Problem2, IsIsogram) {
